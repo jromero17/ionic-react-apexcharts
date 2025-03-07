@@ -26,37 +26,181 @@ npm install react-apexcharts apexcharts
 ## Usage
 
 ```js
-import Chart from 'react-apexcharts'
+import Chart from 'react-apexcharts';
+
+o
+
+import ReactApexChart from 'react-apexcharts';
+
 ```
+Vamos a establecer dos formatos estándar para usar react-apexcharts con Ionic React, uno para cuando la gráfica está directamente en una página (como un Tab o Home) y otro para cuando se usa un contenedor.
+
+Formato 1: Gráfica Directamente en una Página (Tab o Home)
+
+Este formato es ideal cuando la gráfica es el elemento principal de la página y no necesita estar dentro de un contenedor separado.
 
 To create a basic bar chart with minimal configuration, write as follows:
-```javascript
-class App extends Component {
-  constructor(props) {
-    super(props);
 
-    this.state = {
-      options: {
-        chart: {
-          id: 'apexchart-example'
-        },
-        xaxis: {
-          categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999]
-        }
-      },
-      series: [{
-        name: 'series-1',
-        data: [30, 40, 35, 50, 49, 60, 70, 91, 125]
-      }]
-    }
-  }
-  render() {
-    return (
-      <Chart options={this.state.options} series={this.state.series} type="bar" width={500} height={320} />
-    )
-  }
+```TypeScript HomePage.tsx
+Este formato es ideal cuando la gráfica es el elemento principal de la página y no necesita estar dentro de un contenedor separado.
+
+import React, { useState, useEffect } from 'react';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import Chart from 'react-apexcharts';
+
+interface HomePageProps {}
+
+const HomePage: React.FC<HomePageProps> = () => {
+  const [isClient, setIsClient] = useState(false);
+  const [options, setOptions] = useState({
+    chart: {
+      id: 'apexchart-home',
+    },
+    xaxis: {
+      categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999],
+    },
+  });
+  const [series, setSeries] = useState([
+    {
+      name: 'series-1',
+      data: [30, 40, 35, 50, 49, 60, 70, 91, 125],
+    },
+  ]);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  return (
+    <IonPage>
+      <IonHeader>
+        <IonToolbar>
+          <IonTitle>Home</IonTitle>
+        </IonToolbar>
+      </IonHeader>
+      <IonContent>
+        {isClient && (
+          <div className="chart-container">
+            <Chart options={options} series={series} type="bar" width="100%" height={320} />
+          </div>
+        )}
+      </IonContent>
+    </IonPage>
+  );
+};
+
+export default HomePage;
+```
+Explicación:
+
+- Componente Funcional: Se utiliza un componente funcional con Hooks para el estado.
+- Estado con useState: Se utilizan useState para manejar las opciones del gráfico (options) y los datos de la serie (series).
+- Verificación del Lado del Cliente: Se utiliza la técnica de verificación del lado del cliente con useState e useEffect para evitar problemas de renderizado en el servidor.
+- Componentes de Ionic React: Se utilizan los componentes de Ionic React IonPage, IonHeader, IonToolbar y IonContent para estructurar la página.
+- Renderizado Condicional: El componente Chart solo se renderiza si isClient es true.
+- Ancho del grafico: El atributo width="100%" en el componente Chart establece el ancho del grafico al 100%.
+- Estilos CSS (Opcional): Se puede agregar un contenedor CSS (chart-container) para controlar el layout del gráfico dentro del IonContent.
+
+Formato 2: Gráfica en un Contenedor (Componente Separado)
+
+Este formato es ideal cuando quieres reutilizar la gráfica en diferentes partes de tu aplicación o cuando quieres mantener la lógica de la gráfica 
+separada de la lógica de la página.
+
+```TypeScript GraficContainer.tsx
+import React, { useState, useEffect } from 'react';
+import Chart from 'react-apexcharts';
+
+interface ContainerProps {}
+
+const GraficContainer: React.FC<ContainerProps> = () => {
+  const [isClient, setIsClient] = useState(false);
+  const [options, setOptions] = useState({
+    chart: {
+      id: 'apexchart-container',
+    },
+    xaxis: {
+      categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999],
+    },
+  });
+  const [series, setSeries] = useState([
+    {
+      name: 'series-1',
+      data: [30, 40, 35, 50, 49, 60, 70, 91, 125],
+    },
+  ]);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  return (
+    <>
+      {isClient && (
+        <div className="chart-container">
+            <Chart
+                options={options}
+                series={series}
+                type="bar"
+                width="100%"
+                height={320}
+            />
+        </div>
+      )}
+    </>
+  );
+};
+
+export default GraficContainer;
+```
+Explicación:
+
+- Componente Funcional: Se utiliza un componente funcional con Hooks para el estado.
+- Estado con useState: Se utilizan useState para manejar las opciones del gráfico (options) y los datos de la serie (series).
+- Verificación del Lado del Cliente: Se utiliza la técnica de verificación del lado del cliente con useState e useEffect para evitar problemas de renderizado en el servidor.
+- Renderizado Condicional: El componente Chart solo se renderiza si isClient es true.
+- Ancho del grafico: El atributo width="100%" en el componente Chart establece el ancho del grafico al 100%.
+- Estilos CSS (Requerido): Se requiere un contenedor CSS (chart-container) para controlar el layout del gráfico dentro del contenedor.
+
+Cómo Utilizarlo en una Página (Tab o Home):
+
+```TypeScript HomePage.tsx
+import React from 'react';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import GraficContainer from '../components/GraficContainer'; // Ajusta la ruta
+
+const HomePage: React.FC = () => {
+  return (
+    <IonPage>
+      <IonHeader>
+        <IonToolbar>
+          <IonTitle>Home</IonTitle>
+        </IonToolbar>
+      </IonHeader>
+      <IonContent>
+        <GraficContainer />
+      </IonContent>
+    </IonPage>
+  );
+};
+
+export default HomePage;
+```
+Estilos CSS (Ejemplo):
+
+```Estilos file.css
+/* En un archivo CSS (por ejemplo, GraficContainer.css) */
+.chart-container {
+  width: 100%;
+  max-width: 600px; /* Ajusta el ancho máximo según tus necesidades */
+  margin: 0 auto; /* Centrar el contenedor */
 }
 ```
+##Resumen:
+
+- Gráfica Directamente en una Página: Utiliza el formato 1 cuando la gráfica es el elemento principal de la página y no necesitas un contenedor separado.
+- Gráfica en un Contenedor: Utiliza el formato 2 cuando quieres reutilizar la gráfica en diferentes partes de tu aplicación o cuando quieres mantener la lógica de la gráfica separada de la lógica de la página.
+
+Estos formatos deberían proporcionar una base sólida para trabajar con react-apexcharts en tus proyectos de Ionic React. Recuerda ajustar los estilos CSS según tus necesidades específicas.
 
 This will render the following chart
 <p align="center"><a href="https://apexcharts.com/javascript-chart-demos/column-charts/"><img src="https://apexcharts.com/media/first-bar-chart.svg"></a></p>
