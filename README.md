@@ -1,4 +1,9 @@
 <p align="center"><img src="https://apexcharts.com/media/react-apexcharts.png"></p>
+<div align="center">
+    <p>
+        <a href="https://imunes.net"><img src="https://github.com/jromero17/logos/blob/IMUNES-Multi-Idiomas/ionic-react-capacitor.png?raw=true" title="ionic react capacitor https://apexcharts.com/javascript-chart-demos/column-charts/" alt="Apexcharts Website" width="250" /></a>
+    </p> 
+</div>
 
 <p align="center">
   <a href="https://github.com/apexcharts/react-apexcharts/blob/master/LICENSE"><img src="https://img.shields.io/badge/License-MIT-brightgreen.svg" alt="License"></a>
