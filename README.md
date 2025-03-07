@@ -41,9 +41,9 @@ Este formato es ideal cuando la gráfica es el elemento principal de la página 
 
 To create a basic bar chart with minimal configuration, write as follows:
 
-```TypeScript HomePage.tsx
 Este formato es ideal cuando la gráfica es el elemento principal de la página y no necesita estar dentro de un contenedor separado.
 
+```TypeScript HomePage.tsx
 import React, { useState, useEffect } from 'react';
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 import Chart from 'react-apexcharts';
